@@ -1,0 +1,207 @@
+<!--
+/*
+$Id$
+$Header$
+$Date$
+$DateTime$
+$Change$
+$File$
+$Revision$
+$Author$
+*/
+
+	/*
+	*	This Visualforce Page displays all of the rewards that can be given to a user. Some rewards will not be visible
+	*		to the standard users so results will change depending on the user viewing the app.
+	*		@dev: creinke
+	*/
+ -->
+<apex:page docType="html-5.0"
+			standardStylesheets="false"
+			applyHtmlTag="true"
+			applyBodyTag="false"
+			showHeader="false"
+			sidebar="false"
+			cache="false"
+			expires="900"
+			standardController="Trust_Badge__c"
+			extensions="AllRewards_controller">
+	<script type="text/javascript">
+		var totBadges;
+		var numRecords = 5;
+		var badgeInc = numRecords;
+		getMyInitialData();
+		getRewards();
+		function goToThisRecord (recordId) { sforce.one.navigateToSObject(recordId); }
+		function goToCreateReward () { sforce.one.createRecord('TrustJediMobile__Physical_Reward__c'); }
+		function goToGiveReward () { sforce.one.createRecord('TrustJediMobile__PR2JU__c'); }
+
+	/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+		function getMyInitialData () {
+			Visualforce.remoting.Manager.invokeAction (
+				'{!$RemoteAction.AllRewards_controller.getInitialData}',
+				function(result, event) {
+					if(event.status) {
+						var jUser = JSON.parse(replaceStrings(result.jediUserString));
+						var jProfile = JSON.parse(replaceStrings(result.myProfileString));
+						var jLevel = JSON.parse(replaceStrings(result.jediLevelString));
+						var initDataMarkup = '';
+						initDataMarkup += '	<header class="bg-anchor tc ptm ng-isolate-scope" title="' + jUser.Name + '" icon="Trust_User__c">';
+						initDataMarkup += '		<img src="' + jProfile.SmallPhotoUrl + '"  class="icon icon--d icon--contact sq-60"/>';
+						initDataMarkup += '		<img src="' + jLevel.TrustJediMobile__Image_URL__c + '"  class="icon icon--d icon--TrustJediMobile__Jedi_Level__c sq-60"/>';
+                        initDataMarkup += '     <h1 class="f1 text-color-5 man ng-binding">' + jUser.Name;
+                        if({!adminUser})
+                            initDataMarkup += ' <i>(Admin)</i></h1>';
+                        else
+                            initDataMarkup += '</h1>';
+						initDataMarkup += '		<br/>';
+						initDataMarkup += '		<ul class="list-horizontal grid bg-5 ht-44 f2" role="menubar">';
+						initDataMarkup += '			<li class="size-1of2 grid-cell lh-44 tc">';
+						initDataMarkup += '				<a href="javascript:goToThisRecord(\'' + jLevel.Id + '\');" title="JediTitle" class="ptxs" role="menuitem">';
+						initDataMarkup += '					<span class="icon-utility-email sq-20 text-color-5 active-dim">' + jLevel.Name + '</span>';
+						initDataMarkup += '				</a>';
+						initDataMarkup += '			</li>';
+						initDataMarkup += '			<li class="size-1of2 grid-cell lh-44 tc">';
+						//initDataMarkup += '				<a href="javascript:void()" title="JediTitle" class="ptxs" role="menuitem">';
+						initDataMarkup += '					<span class="icon-utility-location sq-20 text-color-5 active-dim">{!$Label.TrustJediMobile_points} ' + jUser.TrustJediMobile__Points__c + '</span>';
+						//initDataMarkup += '				</a>';
+						initDataMarkup += '			</li>';
+						initDataMarkup += '		</ul>';
+						initDataMarkup += '	</header>';
+						document.getElementById('headerPanel').innerHTML = initDataMarkup;
+					}
+				}
+			);
+		}
+	/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+	/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All Levels Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+		function getRewards() {
+			Visualforce.remoting.Manager.invokeAction(
+				'{!$RemoteAction.AllRewards_controller.getAllRewards}',
+				'{!adminUser}',
+				function(result, event) {
+					if(event.status) {
+						var physicalRewardString = JSON.parse(replaceStrings(result.physicalRewardString));
+						var rewardMarkup = '';
+						//	If user is a trust use rthen allow them to Create or Give a Reward to someone
+						if ({!adminUser}) {
+							rewardMarkup += '<section class="pam border-bottom border--3 clear">';
+							rewardMarkup += '	<button class="btn bg-primary-btn btn--primary pvs size-full brm border border--3" onclick="javascript:goToCreateReward();">';
+							rewardMarkup += '		<span class="text-color-5 f3 fw-semibold">{!$Label.TrustJediMobile_createReward}</span>';
+							rewardMarkup += '	</button>';
+							rewardMarkup += '	<button class="btn bg-primary-btn btn--primary pvs size-full brm border border--3" onclick="javascript:goToGiveReward();">';
+							rewardMarkup += '		<span class="text-color-5 f3 fw-semibold">{!$Label.TrustJediMobile_giveReward}</span>';
+							rewardMarkup += '	</button>';
+							rewardMarkup += '</section>';
+						}
+
+						//	Display the header to the user with correct icon
+						rewardMarkup += '		<header class="bg-2 ng-isolate-scope"';
+						rewardMarkup += '				label="My Badges"';
+						rewardMarkup += '				icon="Custom51">';
+						rewardMarkup += '			<div class="icon icon--Custom51 brs bgs-100 a-mid mhm sq-30" title="Custom51">';
+						rewardMarkup += '				<img class="icon icon--Custom51 brs bgs-100 a-mid mhm sq-30" style="background-color: #d8c760;" alt="{!$Label.TrustJediMobile_trustBadges}" src="/img/icon/t4/custom/custom51_120.png" />';
+						rewardMarkup += '			</div>';
+						rewardMarkup += '			<h1 class="dib thin a-mid">';
+						rewardMarkup += '				<div class="db f3 text-color-1 ng-binding">{!$Label.TrustJediMobile_allTrustRewards}</div>';
+						rewardMarkup += '				<div class="db f6 ng-binding"></div>';
+						rewardMarkup += '			</h1>';
+						rewardMarkup += '		</header>';
+
+						//	Go through list of rewards and give that information to the user
+						for(var i=0;i<physicalRewardString.length;i++) {
+							rewardMarkup += '<a href="javascript:goToThisRecord(\'' + physicalRewardString[i].Id + '\');">';
+							rewardMarkup += '	<article class="mtn mam bg-1 border border--3 pam brm ng-isolate-scope">';
+							rewardMarkup += '		<div class="full forcePageBlockSectionRow">';
+							rewardMarkup += '			<div class="mbs flag flag--rev">';
+							rewardMarkup += '				<div class="flag--body">';
+							rewardMarkup += '					<h1 class="man f3 text-color-1 fw-semibold ng-binding" >' + physicalRewardString[i].TrustJediMobile__Type__c + '</h1>';
+							rewardMarkup += '				</div>';
+							rewardMarkup += '				<span class="icon icon--Custom51 brs bgs-100 a-mid mhm sq-30" title="Custom51">';
+							rewardMarkup += '				<img class="icon icon--Custom51 brs bgs-100 a-mid mhm sq-30" alt="' + physicalRewardString[i].TrustJediMobile__Type__c + '" src="' + physicalRewardString[i].TrustJediMobile__RewardImageURL__c + '" />';
+							rewardMarkup += '				</span>';
+							rewardMarkup += '			</div>';
+							rewardMarkup += '		</div>';
+							rewardMarkup += '		<div class="full forcePageBlockSectionRow">';
+							rewardMarkup += '			<ul class="list-plain man pan">';
+							if (physicalRewardString[i].TrustJediMobile__Type__c)
+								rewardMarkup += '				<li class="f5 text-color-2 ng-binding"><div class="fieldLabel">{!$Label.TrustJediMobile_shortDescription} </div>' + blankNullValue(physicalRewardString[i].TrustJediMobile__Short_Description__c) + '</li>';
+							rewardMarkup += '			</ul>';
+							rewardMarkup += '		</div>'
+
+							//	If there is an image associated with this reward then display that to the user
+							if(physicalRewardString[i].TrustJediMobile__ShowRewardImage__c) {
+								rewardMarkup += '		<span class="flag--body">';
+								rewardMarkup += '			<img src="' + physicalRewardString[i].TrustJediMobile__RewardImageURL__c + '" height="150"/>';
+								rewardMarkup += '		</span>';
+							}
+							rewardMarkup += '	</article>';
+							rewardMarkup += '</a>';
+						}
+						document.getElementById('rewardRepeat').innerHTML = rewardMarkup;
+					} else {
+						alert(result.errMsg);
+					}
+				}
+			);
+		}
+	/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END All Levels Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+		function blankNullValue (origString) {
+			var undef;
+			if(origString == undef) origString = '';
+			return origString;
+		}
+
+		function replaceStrings(origString) {
+			var newString = origString;
+
+			// swap string items to "
+			while (newString.search('\&quot\;') > 0) {
+				newString = newString.replace('\&quot\;', '\"');
+			}
+
+			//  swap string items to <
+			while (newString.search('\&lt\;') > 0) {
+				newString = newString.replace('\&lt\;', '\<');
+			}
+
+			//  swap string items to >
+			while (newString.search('\&gt\;') > 0) {
+				newString = newString.replace('\&gt\;', '\>');
+			}
+
+			//  swap string items to &
+			while (newString.search('\&amp\;') > 0) {
+				newString = newString.replace('\&amp\;', '\&');
+			}
+
+			//  swap string items to '
+			while (newString.search('\&#39\;') > 0) {
+				newString = newString.replace('\&#39\;', '\'');
+			}
+
+			return newString;
+		}
+
+	</script>
+	<meta charset="utf-8" />
+	<meta name="description" content="Jedi Trust" />
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0" />
+	<meta http-equiv="cleartype" content="on" />
+	<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.TrustJedi_resources, 'css/style.css')}" />
+
+	<body>
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div id="headerPanel" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BADGE DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div id="rewardRepeat" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END BADGE DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	</body>
+</apex:page>

@@ -1,0 +1,194 @@
+<!--
+/*
+$Id$
+$Header$
+$Date$
+$DateTime$
+$Change$
+$File$
+$Revision$
+$Author$
+*/
+
+    /*
+    *   This Visualforce Page displays all of the trust levels that can be achieved by a user and
+    *       how many points are required.
+    *       @dev: creinke
+    */
+ -->
+<apex:page docType="html-5.0"
+            standardStylesheets="false"
+            applyHtmlTag="true"
+            applyBodyTag="false"
+            showHeader="false"
+            sidebar="false"
+            cache="false"
+            expires="900"
+            standardController="Jedi_Level__c"
+            extensions="AllLevels_controller">
+    <script type="text/javascript">
+        getMyInitialData();
+        getAllLevels();
+        function goToThisRecord (recordId) { sforce.one.navigateToSObject(recordId); }
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function getMyInitialData () {
+            Visualforce.remoting.Manager.invokeAction (
+                '{!$RemoteAction.AllLevels_controller.getInitialData}',
+                function(result, event) {
+                    if(event.status) {
+                        var jUser = JSON.parse(replaceStrings(result.jediUserString));
+                        var jProfile = JSON.parse(replaceStrings(result.myProfileString));
+                        var jLevel = JSON.parse(replaceStrings(result.jediLevelString));
+                        var initDataMarkup = '';
+                        initDataMarkup += ' <header class="bg-anchor tc ptm ng-isolate-scope" title="' + jUser.Name + '" icon="Trust_User__c">';
+                        initDataMarkup += '     <img src="' + jProfile.SmallPhotoUrl + '"  class="icon icon--d icon--contact sq-60"/>';
+                        initDataMarkup += '     <img src="' + jLevel.TrustJediMobile__Image_URL__c + '"  class="icon icon--d icon--contact sq-60"/>';
+                        initDataMarkup += '     <h1 class="f1 text-color-5 man ng-binding">' + jUser.Name;
+                        if({!adminUser})
+                            initDataMarkup += ' <i>(Admin)</i></h1>';
+                        else
+                            initDataMarkup += '</h1>';
+                        initDataMarkup += '     <br/>';
+                        initDataMarkup += '     <ul class="list-horizontal grid bg-5 ht-44 f2" role="menubar">';
+                        initDataMarkup += '         <li class="size-1of2 grid-cell lh-44 tc">';
+                        initDataMarkup += '             <a href="javascript:goToThisRecord(\'' + jLevel.Id + '\');" title="JediTitle" class="ptxs" role="menuitem">';
+                        initDataMarkup += '                 <span class="icon-utility-email sq-20 text-color-5 active-dim">' + jLevel.Name + '</span>';
+                        initDataMarkup += '             </a>';
+                        initDataMarkup += '         </li>';
+                        initDataMarkup += '         <li class="size-1of2 grid-cell lh-44 tc">';
+                        //initDataMarkup += '             <a href="javascript:void()" title="JediTitle" class="ptxs" role="menuitem">';
+                        initDataMarkup += '                 <span class="icon-utility-location sq-20 text-color-5 active-dim">{!$Label.TrustJediMobile_points} ' + jUser.TrustJediMobile__Points__c + '</span>';
+                        //initDataMarkup += '             </a>';
+                        initDataMarkup += '         </li>';
+                        initDataMarkup += '     </ui>';
+                        initDataMarkup += ' </header>';
+                        document.getElementById('headerPanel').innerHTML = initDataMarkup;
+                    }
+                }
+            );
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All Levels Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function getAllLevels() {
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AllLevels_controller.getAllJediLevels}',
+                function(result, event) {
+                    if(event.status) {
+                        var levelData = JSON.parse(replaceStrings(result.jediLevelString));
+                        var levelMarkup = '';
+                        for(var i=0;i<levelData.length;i++) {
+                            var wycd = convertToList(levelData[i].TrustJediMobile__WhatYouCanDo__c);
+                            var wycddq = convertToList(levelData[i].TrustJediMobile__WhatYouCanDo_Dev_QA__c);
+                            var rewards = convertToList(levelData[i].TrustJediMobile__RewardName__c);
+                            levelMarkup += '<a href="javascript:goToThisRecord(\'' + levelData[i].Id + '\');">';
+                            levelMarkup += '    <article class="mtn mam bg-1 border border--3 pam brm ng-isolate-scope">';
+                            levelMarkup += '        <div class="full forcePageBlockSectionRow">';
+                            levelMarkup += '            <div class="mbs flag flag--rev">';
+                            levelMarkup += '                <div class="flag--body">';
+                            levelMarkup += '                    <h1 class="man f3 text-color-1 fw-semibold ng-binding" >' + levelData[i].Name + ' (' + levelData[i].TrustJediMobile__Points_Required__c + ' {!$Label.TrustJediMobile_pointsNoChar})</h1>'
+                            levelMarkup += '                </div>';
+                            levelMarkup += '                <span class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" title="Custom35">';
+                            levelMarkup += '                <img class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" alt="' + levelData[i].Name + '" src="' + levelData[i].TrustJediMobile__Image_URL__c + '" />';
+                            levelMarkup += '                </span>';
+                            levelMarkup += '            </div>';
+                            levelMarkup += '        </div>';
+                            levelMarkup += '        <div class="full forcePageBlockSectionRow">';
+                            levelMarkup += '            <ul class="list-plain man pan">';
+                            if(levelData[i].TrustJediMobile__RenderWYCD__c)
+                                levelMarkup += '            <li class="f5 text-color-2 ng-binding"><div class="fieldLabel">{!$Label.TrustJediMobile_whatYouCanDo}</div>' + wycd + '<li>';
+                            if(levelData[i].TrustJediMobile__Render_Reward__c)
+                                levelMarkup += '                <li class="f5 text-color-2 ng-binding"><span class="fieldLabel">{!$Label.TrustJediMobile_rewards}</span>' + levelData[i].TrustJediMobile__RewardName__c + '<li>';
+
+                            levelMarkup += '            </ul>';
+                            levelMarkup += '        </div>'
+                            levelMarkup += '    </article>';
+                            levelMarkup += '</a>';
+                        }
+                        document.getElementById('levelRepeat').innerHTML = levelMarkup;
+                    } else {
+                        alert(result.errMsg);
+                    }
+                }
+            );
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END All Levels Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+        function convertToList(origString) {
+            var undefinded;
+            if(origString != undefinded) {
+                var newString = origString;
+                while (newString.search(',') > 0) {
+                    newString = newString.replace(',','<br/>');
+                }
+            } else newString = '';
+            return newString;
+        }
+
+        function replaceStrings(origString) {
+            var newString = origString;
+
+            // swap string items to "
+            while (newString.search('\&quot\;') > 0) {
+                newString = newString.replace('\&quot\;', '\"');
+            }
+
+            //  swap string items to <
+            while (newString.search('\&lt\;') > 0) {
+                newString = newString.replace('\&lt\;', '\<');
+            }
+
+            //  swap string items to >
+            while (newString.search('\&gt\;') > 0) {
+                newString = newString.replace('\&gt\;', '\>');
+            }
+
+            //  swap string items to &
+            while (newString.search('\&amp\;') > 0) {
+                newString = newString.replace('\&amp\;', '\&');
+            }
+
+            //  swap string items to '
+            while (newString.search('\&#39\;') > 0) {
+                newString = newString.replace('\&#39\;', '\'');
+            }
+
+            return newString;
+        }
+
+    </script>
+    <meta charset="utf-8" />
+    <meta name="description" content="Jedi Trust" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0" />
+    <meta http-equiv="cleartype" content="on" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.TrustJedi_resources, 'css/style.css')}" />
+    <body>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div id="headerPanel" />
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <div id="levelList">
+            <div id="preLevelSection" />
+
+            <header class="bg-2 ng-isolate-scope"
+                    label="All Levels"
+                    icon="Custom35">
+                <div class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" title="Custom35">
+                    <img class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" style="background-color: #FC4F59;" alt="{!$Label.TrustJediMobile_trustJediLevels}" src="/img/icon/t4/custom/custom53_120.png" />
+                </div>
+                <h1 class="dib thin a-mid">
+                    <div class="db f3 text-color-1 ng-binding">{!$Label.TrustJediMobile_allLevelsPoints}</div>
+                </h1>
+            </header>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ LEVEL DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div id="levelRepeat" />
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END LEVEL DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        </div>
+    </body>
+</apex:page>

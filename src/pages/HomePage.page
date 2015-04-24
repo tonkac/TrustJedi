@@ -1,0 +1,460 @@
+<!--
+/*
+$Id$
+$Header$
+$Date$
+$DateTime$
+$Change$
+$File$
+$Revision$
+$Author$
+*/
+
+    /*
+    *   This Visualforce Page is the main page of the Trust Jedi application. From this main page the user
+    *       can find out specifics for their personal Jedi Level. This includes their level, how many points
+    *       they have, and what badges are associated with those points. They can also navigate to see badges,
+    *       levels, and rewards that are available to them.
+    *       @dev: creinke
+    */
+ -->
+<apex:page docType="html-5.0"
+            standardStylesheets="false"
+            applyHtmlTag="true"
+            applyBodyTag="false"
+            showHeader="false"
+            sidebar="false"
+            cache="false"
+            expires="900"
+            standardController="Jedi_User__c"
+            extensions="HomePage_controller">
+    <meta charset="utf-8" />
+    <meta name="description" content="Jedi Trust" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0" />
+    <meta http-equiv="cleartype" content="on" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.TrustJedi_resources, 'css/style.css')}" />
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <link href="code.css" rel="stylesheet" type="text/css" />
+    <link href="icons.css" rel="stylesheet" type="text/css" />
+    <link href="fonts/ss-gizmo/ss-gizmo.css" rel="stylesheet" type="text/css" />
+    <link href="fonts/ss-pika/ss-pika.css" rel="stylesheet" type="text/css" />
+    <link href="fonts/ss-gizmo/ss-gizmo.css" rel="stylesheet" type="text/css" />
+    <link href="fonts/ss-standard/ss-standard.css" rel="stylesheet" type="text/css" />
+    <script src="{!URLFOR($Resource.jquery)}"></script>
+    <script type="text/javascript">
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+        var totBadges;
+        var badgesToShow = {!badgesToShow};
+        var badgeInc = badgesToShow;
+        var view = document.getElementById('allPages');
+
+        //  These are navigation functions that take the user to specific locations in the app
+        function goToThisRecord (recordId) { sforce.one.navigateToSObject(recordId); }
+        function goToAllBadges () { sforce.one.navigateToURL('/apex/AllBadges?retURL=%Faapex%FaHomePage?startPage=3'); }
+        function goToAllJediLevels () { sforce.one.navigateToURL('/apex/AllLevels'); }
+        function goToViewRewards () { sforce.one.navigateToURL('/apex/AllRewards'); }
+        function goToSubmitIssue () { sforce.one.createRecord('Trust_Issue__c'); }
+        function goToCreateBadge () { sforce.one.createRecord('TrustJediMobile__B2JU__c'); }
+        function goToCreateAlert () { sforce.one.createRecord('TrustJediMobile__Security_Alert__c'); }
+
+        //  The below function will set the starting page for the users
+        window.onload = function () {
+            getMyInitialData();
+            var sp = '{!startingPage}';
+            if (sp == 1) {
+                renderPage_1();
+            } else if (sp == 2) {
+                renderPage_2();
+            } else {
+                renderPage_0();
+            }
+        }
+
+        //  Render the markup that will be used to generate the navigation buttons.
+        function getPageIndicator (thisPage) {
+            var buttonMarkup = '';
+
+            if (thisPage == 0) {
+                buttonMarkup += '   <div>';
+                buttonMarkup += '       <section class="dt w-100p bg-2 prm plm">';
+                buttonMarkup += '           <a href="javascript:void(0)" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-1">{!$Label.TrustJediMobile_alerts}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:renderPage_1()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_myBadges}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:renderPage_2()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_related}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '       <section id="currentTab" class="pos-rel dt w-100p bg-2 prm plm border-bottom border--2">';
+                buttonMarkup += '           <article class="current bg-primary size-1of3"></article>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '   </div>';
+
+                document.getElementById('p0Header').innerHTML = buttonMarkup;
+                document.getElementById('p1Header').innerHTML = '';
+                document.getElementById('p2Header').innerHTML = '';
+            }
+
+            if (thisPage == 1) {
+                buttonMarkup += '   <div>';
+                buttonMarkup += '       <section class="dt w-100p bg-2 prm plm">';
+                buttonMarkup += '           <a href="javascript:renderPage_0()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_alerts}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:void(0)" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-1">{!$Label.TrustJediMobile_myBadges}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:renderPage_2()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_related}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '       <section id="currentTab" class="pos-rel dt w-100p bg-2 prm plm border-bottom border--2">';
+                buttonMarkup += '           <article class="current bg-primary size-1of3"></article>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '   </div>';
+
+                document.getElementById('p0Header').innerHTML = '';
+                document.getElementById('p1Header').innerHTML = buttonMarkup;
+                document.getElementById('p2Header').innerHTML = '';
+            }
+                
+            if (thisPage == 2) {
+                buttonMarkup += '   <div>';
+                buttonMarkup += '       <section class="dt w-100p bg-2 prm plm">';
+                buttonMarkup += '           <a href="javascript:renderPage_0()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_alerts}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:renderPage_1()" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-2">{!$Label.TrustJediMobile_myBadges}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '           <a href="javascript:void(0)" class="dtc a-mid size-1of3 ht-44 tc">';
+                buttonMarkup += '               <span class="fw-semibold f6 caps text-color-1">{!$Label.TrustJediMobile_related}</span>';
+                buttonMarkup += '           </a>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '       <section id="currentTab" class="pos-rel dt w-100p bg-2 prm plm border-bottom border--2">';
+                buttonMarkup += '           <article class="current bg-primary size-1of3"></article>';
+                buttonMarkup += '       </section>';
+                buttonMarkup += '   </div>';
+
+                document.getElementById('p0Header').innerHTML = '';
+                document.getElementById('p1Header').innerHTML = '';
+                document.getElementById('p2Header').innerHTML = buttonMarkup;
+            }
+        }
+
+        //  Capture all of the specific user information. Jedi User and Jedi Level information.
+        function getMyInitialData () {
+            Visualforce.remoting.Manager.invokeAction (
+                '{!$RemoteAction.HomePage_controller.getInitialData}',
+                function (result, event) {
+                    if (event.status) {
+                        var jUser = JSON.parse(replaceStrings(result.jediUserString));
+                        var jProfile = JSON.parse(replaceStrings(result.myProfileString));
+                        var jLevel = JSON.parse(replaceStrings(result.jediLevelString));
+                        var initDataMarkup = '';
+                        initDataMarkup += ' <header class="bg-anchor tc ptm ng-isolate-scope" title="' + jUser.Name + '" icon="Trust_User__c">';
+                        initDataMarkup += '     <img src="' + jProfile.SmallPhotoUrl + '"  class="icon icon--d icon--contact sq-60"/>';
+                        initDataMarkup += '     <img src="' + jLevel.TrustJediMobile__Image_URL__c + '"  class="icon icon--d icon--TrustJediMobile__Jedi_Level__c sq-60"/>';
+                        initDataMarkup += '     <h1 class="f1 text-color-5 man ng-binding">' + jUser.Name;
+                        if({!adminUser})
+                            initDataMarkup += ' <i>(Admin)</i></h1>';
+                        else
+                            initDataMarkup += '</h1>';
+                        initDataMarkup += '     <br/>';
+                        initDataMarkup += '     <ul class="list-horizontal grid bg-5 ht-44 f2" role="menubar">';
+                        initDataMarkup += '         <li class="size-1of2 grid-cell lh-44 tc">';
+                        initDataMarkup += '             <a href="javascript:goToThisRecord(\'' + jLevel.Id + '\');" title="JediTitle" class="ptxs" role="menuitem">';
+                        initDataMarkup += '                 <span class="icon-utility-email sq-20 text-color-5 active-dim">' + jLevel.Name + '</span>';
+                        initDataMarkup += '             </a>';
+                        initDataMarkup += '         </li>';
+                        initDataMarkup += '         <li class="size-1of2 grid-cell lh-44 tc">';
+                        //initDataMarkup += '             <a href="javascript:void()" title="JediTitle" class="ptxs" role="menuitem">';
+                        initDataMarkup += '                 <span class="icon-utility-location sq-20 text-color-5 active-dim">{!$Label.TrustJediMobile_points} ' + jUser.TrustJediMobile__Points__c + '</span>';
+                        //initDataMarkup += '             </a>';
+                        initDataMarkup += '         </li>';
+                        initDataMarkup += '     </ul>';
+                        initDataMarkup += ' </header>';
+                        document.getElementById('headerPanel').innerHTML = initDataMarkup;
+                    }
+                }
+            );
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Header Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Alert Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function getSecurityAlerts() {
+            var alertMarkup = '';
+            //  If user is a Trust Admin they can create new Alerts from the mobile app
+            if ({!adminUser}) {
+                alertMarkup += '<section class="pam border-bottom border--3 clear">';
+                alertMarkup += '    <button class="btn bg-primary-btn btn--primary pvs size-full brm border border--3" onclick="javascript:goToCreateAlert();">';
+                alertMarkup += '        <span class="text-color-5 f3 fw-semibold">{!$Label.TrustJediMobile_createAlert}</span>';
+                alertMarkup += '    </button>';
+                alertMarkup += '</section>';
+            }
+
+            Visualforce.remoting.Manager.invokeAction (
+                '{!$RemoteAction.HomePage_controller.getAlerts}',
+                function (result, event) {
+                    if (event.status) {
+                        //  Show all alerts that are currently to be displayed
+                        var alerts = JSON.parse(replaceStrings(result.alertString));
+                        var imgUrl = "{!URLFOR($Resource.TrustJedi_resources, 'img/alert_icon_md.png')}";
+                        alertMarkup += '<section class="pam border-bottom border--3 clear">';
+                        for (var i=0;i<alerts.length;i++) {
+                            alertMarkup += '<a href="javascript:goToThisRecord(\'' + alerts[i].Id + '\');">';
+                            alertMarkup += '    <section class="bg-7 border-bottom border--3">';
+                            alertMarkup += '        <span class="flag">';
+                            alertMarkup += '            <span class="flag--image phm">';
+                            alertMarkup += '                <span class="text-error icon-utility-error">';
+                            alertMarkup += '                    <img src="' + imgUrl + '" height="25px" width="25px" />';
+                            alertMarkup += '                </span>';
+                            alertMarkup += '            </span>';
+                            alertMarkup += '            <span class="flag--body">';
+                            alertMarkup += '                    <h1 class="mvm fw-semibold text-color-1 f4">{!$Label.TrustJediMobile_securityAlert} ' + alerts[i].Name + '</h1>';
+                            alertMarkup += '            </span>';
+                            alertMarkup += '        </span>';
+                            alertMarkup += '        <p class="mhm mtn f6 text-color-1">' + alerts[i].TrustJediMobile__Subject__c + '</p>';
+
+                            //  If the alert has an image it should be displayed here
+                            if(alerts[i].TrustJediMobile__ShowAlertImage__c) {
+                                alertMarkup += '        <span class="flag--body">';
+                                alertMarkup += '            <img src="' + alerts[i].TrustJediMobile__AlertImageURL__c + '" height="150" />';
+                                alertMarkup += '        </span>';
+                            }
+                            alertMarkup += '    </section>';
+                            alertMarkup += '    <p/>';
+                            alertMarkup += '</a>';
+                        }
+                        alertMarkup += '</section>';
+                        document.getElementById('p0Alerts').innerHTML += alertMarkup;
+                    } else {
+                        alert('error: ' + result.errMsg);
+                    }
+                }
+            );
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Alert Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ My Badges Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function getMyBadges(badgesToShow) {
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.HomePage_controller.getBadges}',
+                badgesToShow,
+                function(result, event) {
+                    if (event.status) {
+                        var jsonBadgeData = JSON.parse(replaceStrings(result.badgeString));
+                        var badgeMarkup = '';
+
+                        //  Display the my badges header to the user. This includes the number of badges that are approved
+                        badgeMarkup += '<header class="bg-2 ng-isolate-scope"';
+                        badgeMarkup += '        label="{!$Label.TrustJediMobile_myBadges}"';
+                        badgeMarkup += '        icon="Custom35">';
+                        badgeMarkup += '    <div class="icon icon--Custom17 brs bgs-100 a-mid mhm sq-30" title="Custom17">';
+                        badgeMarkup += '        <img class="icon icon--Custom17 brs bgs-100 a-mid mhm sq-30" ';
+                        badgeMarkup += '            style="background-color: #acd360;"';
+                        badgeMarkup += '            alt="{!$Label.TrustJediMobile_trustBadges}"';
+                        badgeMarkup += '            src="/img/icon/t4/custom/custom17_120.png" />';
+                        badgeMarkup += '    </div>';
+                        badgeMarkup += '    <h1 class="dib thin a-mid">';
+                        badgeMarkup += '        <div class="db f3 text-color-1 ng-binding">{!$Label.TrustJediMobile_myBadges}</div>';
+                        badgeMarkup += '        <div class="db f6 lower ng-binding">{!$Label.TrustJediMobile_badges} <span id="bdgCount" /> </div>';
+                        badgeMarkup += '    </h1>';
+                        badgeMarkup += '</header>';
+
+                        for (var i=0;i<jsonBadgeData.length;i++) {
+                            //  Go through each of the badges so they are displayed to user
+                            badgeMarkup += '<article class="mtn mam bg-1 border border--3 pam brm ng-isolate-scope">';
+                            badgeMarkup += '    <div class="full forcePageBlockSectionRow">';
+                            badgeMarkup += '        <a href="javascript:goToThisRecord(\'' + jsonBadgeData[i].Id + '\');">';
+                            badgeMarkup += '            <div class="mbs flag flag--rev">';
+                            badgeMarkup += '                <div class="flag--body">';
+                            badgeMarkup += '                    <h1 class="man f3 text-color-1 fw-semibold ng-binding" >' + jsonBadgeData[i].TrustJediMobile__Trust_Badge__r.Name + ' (' + jsonBadgeData[i].TrustJediMobile__Points_Granted__c + ' {!$Label.TrustJediMobile_pointsNoChar})</h1>'
+                            badgeMarkup += '                </div>';
+                            badgeMarkup += '                <span class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" title="Custom35">';
+                            badgeMarkup += '                    <img class="icon icon--Custom35 brs bgs-100 a-mid mhm sq-30" alt="' + jsonBadgeData[i].Name + '" src="' + jsonBadgeData[i].TrustJediMobile__Trust_Badge__r.TrustJediMobile__Badge_Image_URL__c + '" />';
+                            badgeMarkup += '                </span>';
+                            badgeMarkup += '            </div>';
+                            badgeMarkup += '        </div>';
+                            badgeMarkup += '        <div class="full forcePageBlockSectionRow">';
+                            badgeMarkup += '            <ul class="list-plain man pan">';
+                            badgeMarkup += '                <li class="f5 text-color-2 ng-binding"><span class="fieldLabel">{!$Label.TrustJediMobile_status} </span>' + jsonBadgeData[i].TrustJediMobile__Approval_Status__c + '</li>';
+                            badgeMarkup += '                <li class="f5 text-color-2 ng-binding"><span class="fieldLabel">{!$Label.TrustJediMobile_requestingUser} </span>' + jsonBadgeData[i].TrustJediMobile__Requesting_User__r.Name + '</li>';
+                            badgeMarkup += '                <li class="f5 text-color-2 ng-binding"><div class="fieldLabel">{!$Label.TrustJediMobile_description}</div>' + jsonBadgeData[i].TrustJediMobile__Short_Description__c + '</li>';
+                            badgeMarkup += '            </ul>';
+                            badgeMarkup += '        </a>';
+                            badgeMarkup += '    </div>'
+                            badgeMarkup += '</article>';
+                        }
+
+                        var moreButtonMarkup = '';
+                        //  If the user has more badges than the default displayed a button will be displayed to show more badges
+                        if (result.totalBadges > badgesToShow && result.totalBadges != 0 && badgesToShow != '-1') {
+                            moreButtonMarkup += '<div id="moreBadgesPanel">';
+                            moreButtonMarkup += '   <div class="mhm">';
+                            moreButtonMarkup += '       <button class="btn bg-secondary-btn btn--secondary pvs size-full brm border border--3"';
+                            moreButtonMarkup += '           onclick="javascript:addBadges();">'
+                            moreButtonMarkup += '           <span class="text-color-4 f3 fw-semibold">{!$Label.TrustJediMobile_moreBadges}</span>';
+                            moreButtonMarkup += '       </button>';
+                            moreButtonMarkup += '   </div>';
+                            moreButtonMarkup += '   <p/>';
+                            moreButtonMarkup += '</div>';
+                            document.getElementById('p1MBtton').innerHTML = moreButtonMarkup;
+                        } else {
+                            document.getElementById('p1MBtton').innerHTML = '';
+                        }
+                        document.getElementById('p1Badges').innerHTML = badgeMarkup;
+                        document.getElementById('bdgCount').innerHTML = result.totalBadges;
+                        totBadges = result.totalBadges;
+                    } else {
+                        alert(result.errMsg);
+                    }
+                }
+            );
+
+            if (badgesToShow == '-1')
+                document.getElementById('moreBadgesPanel').style.visibility = 'hidden';
+        }
+
+        /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Add Badges to List ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function addBadges() {
+            badgesToShow = badgesToShow + badgeInc;
+            if (badgesToShow >= totBadges) {
+                badgesToShow = -1;
+                document.getElementById('moreBadgesPanel').style.visibility = 'hidden';
+            }
+            getMyBadges(badgesToShow);
+        }
+        /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Add Badges to List ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END My Badges Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Related List Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function addRelatedLists () {
+            var rListMarkup = '';
+            rListMarkup += '<section class="pam border-bottom border--3 clear">';
+            rListMarkup += '    <button class="btn bg-primary-btn btn--primary pvs size-full brm border border--3" onclick="javascript:goToSubmitIssue();">';
+            rListMarkup += '        <span class="text-color-5 f3 fw-semibold">{!$Label.TrustJediMobile_submitTrustIssue}</span>';
+            rListMarkup += '    </button>';
+            rListMarkup += '    <p/>';
+            rListMarkup += '    <button class="btn bg-primary-btn btn--primary pvs size-full brm border border--3" onclick="javascript:goToCreateBadge();">';
+            rListMarkup += '        <span class="text-color-5 f3 fw-semibold">{!$Label.TrustJediMobile_giveRequestBadge}</span>';
+            rListMarkup += '    </button>';
+            rListMarkup += '    <p/>';
+            rListMarkup += '    <button class="btn bg-secondary-btn btn--secondary pvs size-full brm border border--3" onclick="javascript:goToAllBadges();">';
+            rListMarkup += '        <span class="text-color-4 f3 fw-semibold">{!$Label.TrustJediMobile_viewAllBadges}</span>';
+            rListMarkup += '    </button>';
+            rListMarkup += '    <p/>';
+            rListMarkup += '    <button class="btn bg-secondary-btn btn--secondary pvs size-full brm border border--3" onclick="javascript:goToAllJediLevels();">';
+            rListMarkup += '        <span class="text-color-4 f3 fw-semibold">{!$Label.TrustJediMobile_viewAllLevels}</span>';
+            rListMarkup += '    </button>';
+            rListMarkup += '    <p/>';
+            rListMarkup += '    <button class="btn bg-secondary-btn btn--secondary pvs size-full brm border border--3" onclick="javascript:goToViewRewards();">';
+            rListMarkup += '        <span class="text-color-4 f3 fw-semibold">{!$Label.TrustJediMobile_viewAllRewards}</span>';
+            rListMarkup += '    </button>';
+            rListMarkup += '    <p/>';
+            rListMarkup += '</section>';
+            document.getElementById('p2RLists').innerHTML = rListMarkup;
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Related List Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Decode String Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        function replaceStrings (origString) {
+            var newString = origString;
+
+            // swap string items to "
+            while (newString.search('\&quot\;') > 0) {
+                newString = newString.replace('\&quot\;', '\"');
+            }
+
+            //  swap string items to <
+            while (newString.search('\&lt\;') > 0) {
+                newString = newString.replace('\&lt\;', '\<');
+            }
+
+            //  swap string items to >
+            while (newString.search('\&gt\;') > 0) {
+                newString = newString.replace('\&gt\;', '\>');
+            }
+
+            //  swap string items to &
+            while (newString.search('\&amp\;') > 0) {
+                newString = newString.replace('\&amp\;', '\&');
+            }
+
+            //  swap string items to '
+            while (newString.search('\&#39\;') > 0) {
+                newString = newString.replace('\&#39\;', '\'');
+            }
+
+            return newString;
+        }
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END Decode String Section ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+        function renderPage_0 () {
+            document.getElementById('p0Header').innerHTML = '';
+            document.getElementById('p0Alerts').innerHTML = '';
+            document.getElementById('p1Header').innerHTML = '';
+            document.getElementById('p1Badges').innerHTML = '';
+            document.getElementById('p1MBtton').innerHTML = '';
+            document.getElementById('p2Header').innerHTML = '';
+            document.getElementById('p2RLists').innerHTML = '';
+            getPageIndicator(0);
+            getSecurityAlerts();
+        }
+
+        function renderPage_1 () {
+            document.getElementById('p0Header').innerHTML = '';
+            document.getElementById('p0Alerts').innerHTML = '';
+            document.getElementById('p1Header').innerHTML = '';
+            document.getElementById('p1Badges').innerHTML = '';
+            document.getElementById('p1MBtton').innerHTML = '';
+            document.getElementById('p2Header').innerHTML = '';
+            document.getElementById('p2RLists').innerHTML = '';
+            getPageIndicator(1);
+            getMyBadges(badgesToShow);
+        }
+
+        function renderPage_2 () {
+            document.getElementById('p0Header').innerHTML = '';
+            document.getElementById('p0Alerts').innerHTML = '';
+            document.getElementById('p1Header').innerHTML = '';
+            document.getElementById('p1Badges').innerHTML = '';
+            document.getElementById('p1MBtton').innerHTML = '';
+            document.getElementById('p2Header').innerHTML = '';
+            document.getElementById('p2RLists').innerHTML = '';
+            getPageIndicator(2);
+            addRelatedLists();
+        }
+    </script>   
+    <style type="text/css">
+
+    </style>
+
+    <body>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <span id="headerPanel" />
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END HEADER DISPLAY SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <div id="na">
+            <div id="page_0">
+                <span id="p0Header" />
+                <span id="p0Alerts" />
+            </div>
+            <div id="page_1">
+                <span id="p1Header" />
+                <span id="p1Badges" />
+                <span id="p1MBtton" />
+            </div>
+            <div id="page_2">
+                <span id="p2Header" />
+                <span id="p2RLists" />
+            </div>
+        </div>
+        <span id="comment" />
+    </body>
+</apex:page>

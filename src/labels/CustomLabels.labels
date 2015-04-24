@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>AdminDesignation</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AdminDesignation</shortDescription>
+        <value>Admin</value>
+    </labels>
+    <labels>
+        <fullName>Alerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Alerts</shortDescription>
+        <value>Alerts</value>
+    </labels>
+    <labels>
+        <fullName>AllAlerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AllAlerts</shortDescription>
+        <value>All Alerts</value>
+    </labels>
+    <labels>
+        <fullName>AllBadgesPoints</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AllBadgesPoints</shortDescription>
+        <value>All Badges (# Points)</value>
+    </labels>
+    <labels>
+        <fullName>AllLevelsPoints</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AllLevelsPoints</shortDescription>
+        <value>All Levels (# Points)</value>
+    </labels>
+    <labels>
+        <fullName>AllTrustRewards</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AllTrustRewards</shortDescription>
+        <value>All Trust Rewards</value>
+    </labels>
+    <labels>
+        <fullName>Approved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Approved</shortDescription>
+        <value>Approved</value>
+    </labels>
+    <labels>
+        <fullName>ApprovedBadgeChatterPost</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ApprovedBadgeChatterPost</shortDescription>
+        <value>Congratulations &lt;.recipient&gt;, you have been given Trust Points! 
+
+Recipient: &lt;.recipient&gt; 
+Requestor: &lt;.requestor&gt; 
+Badge Name: &lt;.badgeName&gt; 
+Description: &lt;.desc&gt;</value>
+    </labels>
+    <labels>
+        <fullName>BadgeDescriptionExample</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeDescriptionExample</shortDescription>
+        <value>Badge Description / Example:</value>
+    </labels>
+    <labels>
+        <fullName>BadgeInstructions</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeInstructions</shortDescription>
+        <value>Go to Badge to Give or Request a Badge</value>
+    </labels>
+    <labels>
+        <fullName>BadgeToUser_chatter</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeToUser_chatter</shortDescription>
+        <value>Congratulations ;@recipient;! You have been awarded a new Trust Badge, ;_bname; (;_points; Trust Points), by ;@giver;. 
+
+Manager: ;@manager;
+Approved By: ;@approver;
+#TrustJedi
+-</value>
+    </labels>
+    <labels>
+        <fullName>BadgeToUser_chatter01</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeToUser_chatter01</shortDescription>
+        <value>Congratulations</value>
+    </labels>
+    <labels>
+        <fullName>BadgeToUser_chatter02</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeToUser_chatter02</shortDescription>
+        <value>(</value>
+    </labels>
+    <labels>
+        <fullName>BadgeToUser_chatter03</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BadgeToUser_chatter03</shortDescription>
+        <value>Trust Points) #TrustJedi</value>
+    </labels>
+    <labels>
+        <fullName>ChatterMiddle</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ChatterMiddle</shortDescription>
+        <value>! You have been awarded a new Trust Badge:</value>
+    </labels>
+    <labels>
+        <fullName>ChatterPrefix</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Chatter01</shortDescription>
+        <value>Congratulations</value>
+    </labels>
+    <labels>
+        <fullName>CreateAlert</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CreateAlert</shortDescription>
+        <value>Create Alert</value>
+    </labels>
+    <labels>
+        <fullName>CreateReward</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CreateReward</shortDescription>
+        <value>Create Reward</value>
+    </labels>
+    <labels>
+        <fullName>Debug_featureNotEnabled</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Debug_featureNotEnabled</shortDescription>
+        <value>Feature is not enabled for this org.</value>
+    </labels>
+    <labels>
+        <fullName>DescWhyBadge</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DescWhyBadge</shortDescription>
+        <value>Error: You need to explain why this user should have this badge.</value>
+    </labels>
+    <labels>
+        <fullName>Description</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Description</shortDescription>
+        <value>Description:</value>
+    </labels>
+    <labels>
+        <fullName>Elipsis</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Elipsis</shortDescription>
+        <value>...</value>
+    </labels>
+    <labels>
+        <fullName>ErrorPrefix</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ErrorPrefix</shortDescription>
+        <value>Error:</value>
+    </labels>
+    <labels>
+        <fullName>ErrorRequired</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ErrorRequired</shortDescription>
+        <value>Error: Required</value>
+    </labels>
+    <labels>
+        <fullName>Error_minMaxRequired</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_minMaxRequired</shortDescription>
+        <value>Error: Minimum and Maximum values required.</value>
+    </labels>
+    <labels>
+        <fullName>Error_minPointsHigherThanMax</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_minPointsHigherThanMax</shortDescription>
+        <value>Error: Minimum Points should not be larger then Max Points.</value>
+    </labels>
+    <labels>
+        <fullName>Error_noJediLevelsCreated</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_noJediLevelsCreated</shortDescription>
+        <value>Error: No Jedi Levels Exist So Unable to Process</value>
+    </labels>
+    <labels>
+        <fullName>Error_pointsLessThanMin</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_pointsLessThanMin</shortDescription>
+        <value>Error: Points should be greater than the Minimum.</value>
+    </labels>
+    <labels>
+        <fullName>Error_pointsLessThanZero</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_pointsLessThanZero</shortDescription>
+        <value>Error: Points must be Greater than Zero</value>
+    </labels>
+    <labels>
+        <fullName>Error_pointsMoreThanMax</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error_pointsMoreThanMax</shortDescription>
+        <value>Error: Points should be less than the Maximum.</value>
+    </labels>
+    <labels>
+        <fullName>GiveRequestBadge</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>GiveRequestBadge</shortDescription>
+        <value>Give / Request Badge</value>
+    </labels>
+    <labels>
+        <fullName>GiveReward</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>GiveReward</shortDescription>
+        <value>Give Reward</value>
+    </labels>
+    <labels>
+        <fullName>JediUser_LevelUpChatter</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>JediUser_LevelUpChatter</shortDescription>
+        <value>Congratulations ;@recipient;! You have been promoted to ;_newLevel;! Please review your level and see what rewards you might be eligible for! You can also see what the next level is and what can help you achieve it.
+
+Manager: ;@manager;
+#TrustJedi
+-</value>
+    </labels>
+    <labels>
+        <fullName>Jedi_Level</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Jedi Level</shortDescription>
+        <value>(Jedi Level)</value>
+    </labels>
+    <labels>
+        <fullName>Jedi_User</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Jedi User</shortDescription>
+        <value>(Jedi User)</value>
+    </labels>
+    <labels>
+        <fullName>MoreBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>MoreBadges</shortDescription>
+        <value>More Badges</value>
+    </labels>
+    <labels>
+        <fullName>MyBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>MyBadges</shortDescription>
+        <value>My Badges</value>
+    </labels>
+    <labels>
+        <fullName>NoRecordsFound</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NoRecordsFound</shortDescription>
+        <value>No Record Found in Query</value>
+    </labels>
+    <labels>
+        <fullName>No_Badges_Found</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No_Badges_Found</shortDescription>
+        <value>Error: No Badges were returned during page load.</value>
+    </labels>
+    <labels>
+        <fullName>NumberBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>NumberBadges</shortDescription>
+        <value># badges:</value>
+    </labels>
+    <labels>
+        <fullName>Points</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Points</shortDescription>
+        <value>Points</value>
+    </labels>
+    <labels>
+        <fullName>Related</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Related</shortDescription>
+        <value>Related</value>
+    </labels>
+    <labels>
+        <fullName>RequestingUserHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RequestingUserHeader</shortDescription>
+        <value>Requesting User:</value>
+    </labels>
+    <labels>
+        <fullName>RewardsHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RewardsHeader</shortDescription>
+        <value>Rewards:</value>
+    </labels>
+    <labels>
+        <fullName>SecurityAlertHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SecurityAlertHeader</shortDescription>
+        <value>Security Alert:</value>
+    </labels>
+    <labels>
+        <fullName>ShortDescriptionHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ShortDescriptionHeader</shortDescription>
+        <value>Short Description:</value>
+    </labels>
+    <labels>
+        <fullName>StatusHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>StatusHeader</shortDescription>
+        <value>Status:</value>
+    </labels>
+    <labels>
+        <fullName>SubjectHeader</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SubjectHeader</shortDescription>
+        <value>Subject:</value>
+    </labels>
+    <labels>
+        <fullName>SubmitTrustIssue</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>SubmitTrustIssue</shortDescription>
+        <value>Report Trust Issue</value>
+    </labels>
+    <labels>
+        <fullName>TrustBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustBadges</shortDescription>
+        <value>Trust Badges</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediLevels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediLevels</shortDescription>
+        <value>Trust Jedi Levels</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_adminDesignation</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_adminDesignation</shortDescription>
+        <value>Admin</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_alerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_alerts</shortDescription>
+        <value>Alerts</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_allAlerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_allAlerts</shortDescription>
+        <value>All Alerts</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_allBadgePoints</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_allBadgePoints</shortDescription>
+        <value>All Badges (# Points)</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_allLevelsPoints</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_allLevelsPoints</shortDescription>
+        <value>All Levels (# Points)</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_allTrustRewards</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_allTrustRewards</shortDescription>
+        <value>All Trust Rewards</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_approved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_approved</shortDescription>
+        <value>Approved</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_approvedBadgeChatterPost</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_approvedBadgeChatterPost</shortDescription>
+        <value>Congratulations &lt;.recipient&gt;, you have been given Trust Points!
+
+Recipient: &lt;.recipient&gt;
+Requestor: &lt;.requestor&gt;
+Badge Name: &lt;.badgeName&gt;
+Description: &lt;.desc&gt;</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_badgeDescExample</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_badgeDescExample</shortDescription>
+        <value>Badge Description / Example:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_badgeInstructions</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_badgeInstructions</shortDescription>
+        <value>Go to Badge to Give or Request a Badge</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_badges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_badges</shortDescription>
+        <value># badges:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_badgesToShow</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_badgesToShow</shortDescription>
+        <value>5</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_createAlert</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_createAlert</shortDescription>
+        <value>Create Alert</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_createReward</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_createReward</shortDescription>
+        <value>Create Reward</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_descWhyBadge</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_descWhyBadge</shortDescription>
+        <value>Error: You need to explain why this user should have this badge.</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_description</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_description</shortDescription>
+        <value>Description:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_ellipsis</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_ellipsis</shortDescription>
+        <value>...</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_errorPrefix</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_errorPrefix</shortDescription>
+        <value>Error:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_errorRequired</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_errorRequired</shortDescription>
+        <value>Error: Required</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_giveRequestBadge</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_giveRequestBadge</shortDescription>
+        <value>Give / Request Badge</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_giveReward</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_giveReward</shortDescription>
+        <value>Give Reward</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_imageServletValue</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_imageServletValue</shortDescription>
+        <value>/servlet/servlet.FileDownload?file=</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_moreBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_moreBadges</shortDescription>
+        <value>More Badges</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_myBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_myBadges</shortDescription>
+        <value>My Badges</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_noRecordsFound</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_noRecordsFound</shortDescription>
+        <value>No Record Found in Query</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_points</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_points</shortDescription>
+        <value>Points:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_pointsNoChar</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_pointsNoChar</shortDescription>
+        <value>Points</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_related</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_related</shortDescription>
+        <value>Related</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_requestingUser</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_requestingUser</shortDescription>
+        <value>Requesting User:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_rewards</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_rewards</shortDescription>
+        <value>Rewards:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_securityAlert</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_securityAlert</shortDescription>
+        <value>Security Alert:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_shortDescription</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_shortDescription</shortDescription>
+        <value>Short Description:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_status</shortDescription>
+        <value>Status:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_subject</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_subject</shortDescription>
+        <value>Subject:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_submitTrustIssue</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_submitTrustIssue</shortDescription>
+        <value>Report Trust Issue</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_trustBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_trustBadges</shortDescription>
+        <value>Trust Badges</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_trustJediLevels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_trustJediLevels</shortDescription>
+        <value>Trust Jedi Levels</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_userDesignation</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_userDesignation</shortDescription>
+        <value>User</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_viewAllAlerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_viewAllAlerts</shortDescription>
+        <value>View All Alerts</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_viewAllBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_viewAllBadges</shortDescription>
+        <value>View All Badges</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_viewAllLevels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_viewAllLevels</shortDescription>
+        <value>View All Levels</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_viewAllRewards</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_viewAllRewards</shortDescription>
+        <value>View All Rewards</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_whatYouCanDo</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_whatYouCanDo</shortDescription>
+        <value>What You Can Do:</value>
+    </labels>
+    <labels>
+        <fullName>TrustJediMobile_whatYouCanDoDevQA</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TrustJediMobile_whatYouCanDoDevQA</shortDescription>
+        <value>What You Can Do (DEV/QA):</value>
+    </labels>
+    <labels>
+        <fullName>UserDesignation</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>UserDesignation</shortDescription>
+        <value>User</value>
+    </labels>
+    <labels>
+        <fullName>User_Profile</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>User Profile</shortDescription>
+        <value>(User Profile)</value>
+    </labels>
+    <labels>
+        <fullName>ViewAllAlerts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ViewAllAlerts</shortDescription>
+        <value>View All Alerts</value>
+    </labels>
+    <labels>
+        <fullName>ViewAllBadges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ViewAllBadges</shortDescription>
+        <value>View All Badges</value>
+    </labels>
+    <labels>
+        <fullName>ViewAllLevels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ViewAllLevels</shortDescription>
+        <value>View All Levels</value>
+    </labels>
+    <labels>
+        <fullName>ViewAllRewards</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ViewAllRewards</shortDescription>
+        <value>View All Rewards</value>
+    </labels>
+    <labels>
+        <fullName>WhatYourCanDo</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>WhatYourCanDo</shortDescription>
+        <value>What You Can Do:</value>
+    </labels>
+</CustomLabels>
